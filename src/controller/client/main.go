@@ -21,4 +21,6 @@ func main() {
 	defer conn.Close()
 
 	c := pb.NewCurrencyCoinServiceClient(conn)
+
+	listCoins(c)
 }
