@@ -5,6 +5,8 @@ import (
 	"net"
 
 	pb "github.com/LuizFJP/currency-coin-grpc-go/proto"
+	"go.mongodb.org/mongo-driver/mongo"
+	"go.mongodb.org/mongo-driver/mongo/options"
 	"google.golang.org/grpc"
 )
 
@@ -15,6 +17,13 @@ type Server struct {
 }
 
 func main() {
+
+	client, err := mongo.NewClient(options.Client().ApplyURI("mongodb://root:root@localhost:27017/"))
+
+	if err != nil {
+		log.Fatalf(err)
+	}
+
 	lis, err := net.Listen("tcp", addr)
 
 	if err != nil {
