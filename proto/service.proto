@@ -14,3 +14,7 @@ message coinResponse {
   int64 score = 3;
 }
 
+message createCoinRequest {
+  string name = 1;
+  double price = 2;
+}
