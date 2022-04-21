@@ -22,5 +22,5 @@ message createCoinRequest {
 }
 
 service CurrencyCoinService {
-  rpc ListCoins(google.protobuf.Empty) returns (coinResponse);
+  rpc ListCoins(google.protobuf.Empty) returns (stream coinResponse);
 }

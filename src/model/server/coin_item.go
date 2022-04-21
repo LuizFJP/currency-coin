@@ -6,8 +6,8 @@ import (
 
 type CoinItem struct {
 	Name string `bson:"name"`
-	Price float64 `bson: "price"`
-	Vote int64 `bson: "vote"`
+	Price float64 `bson:"price"`
+	Vote int64 `bson:"vote"`
 }
 
 func documentToCurrency(data *CoinItem) *pb.CoinResponse {
