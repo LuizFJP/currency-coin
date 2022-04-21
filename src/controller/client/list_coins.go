@@ -12,7 +12,7 @@ import (
 func listCoins(c pb.CurrencyCoinServiceClient) {
 	log.Println(("listCoins was invoked"))
 
-	stream, err := c.ListCoins(context.Background(), &emptypb.Empty{})
+	stream, err := c.ListCoins(context.Background(), &pb.CoinResponse{})
 	log.Println("stream: ", stream)
 	if err != nil {
 		log.Fatalf("Error while calling listCoins: %v\n", err)

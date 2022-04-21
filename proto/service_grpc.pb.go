@@ -8,7 +8,6 @@ package proto
 
 import (
 	context "context"
-	empty "github.com/golang/protobuf/ptypes/empty"
 	grpc "google.golang.org/grpc"
 	codes "google.golang.org/grpc/codes"
 	status "google.golang.org/grpc/status"
@@ -23,7 +22,7 @@ const _ = grpc.SupportPackageIsVersion7
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type CurrencyCoinServiceClient interface {
-	ListCoins(ctx context.Context, in *empty.Empty, opts ...grpc.CallOption) (CurrencyCoinService_ListCoinsClient, error)
+	ListCoins(ctx context.Context, in *ListCoinRequest, opts ...grpc.CallOption) (CurrencyCoinService_ListCoinsClient, error)
 }
 
 type currencyCoinServiceClient struct {
@@ -34,7 +33,7 @@ func NewCurrencyCoinServiceClient(cc grpc.ClientConnInterface) CurrencyCoinServi
 	return &currencyCoinServiceClient{cc}
 }
 
-func (c *currencyCoinServiceClient) ListCoins(ctx context.Context, in *empty.Empty, opts ...grpc.CallOption) (CurrencyCoinService_ListCoinsClient, error) {
+func (c *currencyCoinServiceClient) ListCoins(ctx context.Context, in *ListCoinRequest, opts ...grpc.CallOption) (CurrencyCoinService_ListCoinsClient, error) {
 	stream, err := c.cc.NewStream(ctx, &CurrencyCoinService_ServiceDesc.Streams[0], "/service.CurrencyCoinService/ListCoins", opts...)
 	if err != nil {
 		return nil, err
@@ -70,7 +69,7 @@ func (x *currencyCoinServiceListCoinsClient) Recv() (*CoinResponse, error) {
 // All implementations must embed UnimplementedCurrencyCoinServiceServer
 // for forward compatibility
 type CurrencyCoinServiceServer interface {
-	ListCoins(*empty.Empty, CurrencyCoinService_ListCoinsServer) error
+	ListCoins(*ListCoinRequest, CurrencyCoinService_ListCoinsServer) error
 	mustEmbedUnimplementedCurrencyCoinServiceServer()
 }
 
@@ -78,7 +77,7 @@ type CurrencyCoinServiceServer interface {
 type UnimplementedCurrencyCoinServiceServer struct {
 }
 
-func (UnimplementedCurrencyCoinServiceServer) ListCoins(*empty.Empty, CurrencyCoinService_ListCoinsServer) error {
+func (UnimplementedCurrencyCoinServiceServer) ListCoins(*ListCoinRequest, CurrencyCoinService_ListCoinsServer) error {
 	return status.Errorf(codes.Unimplemented, "method ListCoins not implemented")
 }
 func (UnimplementedCurrencyCoinServiceServer) mustEmbedUnimplementedCurrencyCoinServiceServer() {}
@@ -95,7 +94,7 @@ func RegisterCurrencyCoinServiceServer(s grpc.ServiceRegistrar, srv CurrencyCoin
 }
 
 func _CurrencyCoinService_ListCoins_Handler(srv interface{}, stream grpc.ServerStream) error {
-	m := new(empty.Empty)
+	m := new(ListCoinRequest)
 	if err := stream.RecvMsg(m); err != nil {
 		return err
 	}
