@@ -1,6 +1,7 @@
 package main
 
 import (
+	"context"
 	"log"
 	"net"
 
@@ -23,6 +24,14 @@ func main() {
 	if err != nil {
 		log.Fatalf(err)
 	}
+
+	err = client.Connect(context.Background())
+
+	if err != nil {
+		log.Fatalf(err)
+	}
+
+	collection = client.Database("coinsdb").Collection("coins")
 
 	lis, err := net.Listen("tcp", addr)
 
