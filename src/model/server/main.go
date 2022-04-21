@@ -10,9 +10,9 @@ import (
 
 var addr string = "0.0.0.0:50051"
 
-// type Server struct {
-	
-// }
+type Server struct {
+	pb.CurrencyCoinServiceServer
+}
 
 func main() {
 	lis, err := net.Listen("tcp", addr)
@@ -24,4 +24,10 @@ func main() {
 	log.Printf("Listening on %s\n", addr)
 
 	s := grpc.NewServer()
+	pb.RegisterCurrencyCoinServiceServer(s, &Server{})
+
+	if err = s.Serve(lis); err != nil {
+		log.Fatalf("Failed to server %v\n", err)
+	}
+
 }
