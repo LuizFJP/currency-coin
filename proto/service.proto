@@ -13,7 +13,7 @@ message coinRequest {
 message coinResponse {
   string name = 1;
   double price = 2;
-  int64 score = 3;
+  int64 vote = 3;
 }
 
 message createCoinRequest {
