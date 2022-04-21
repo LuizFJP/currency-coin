@@ -1,0 +1,16 @@
+syntax = "proto3";
+
+package service;
+
+option go_package = "github.com/LuizFJP/currency-coin-grpc-go/proto";
+
+message coinRequest {
+  string name = 1;
+}
+
+message coinResponse {
+  string name = 1;
+  double price = 2;
+  int64 score = 3;
+}
+
