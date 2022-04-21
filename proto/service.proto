@@ -4,6 +4,8 @@ package service;
 
 option go_package = "github.com/LuizFJP/currency-coin-grpc-go/proto";
 
+import "google/protobuf/empty.proto";
+
 message coinRequest {
   string name = 1;
 }
@@ -17,4 +19,8 @@ message coinResponse {
 message createCoinRequest {
   string name = 1;
   double price = 2;
+}
+
+service CurrencyCoinService {
+  rpc ListCoins(google.protobuf.Empty) returns (coinResponse);
 }
