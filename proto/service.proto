@@ -11,6 +11,16 @@ message coinRequest {
 message coinResponse {
   string name = 1;
   double price = 2;
-  int64 score = 3;
+  int64 vote = 3;
 }
 
+message createCoinRequest {
+  string name = 1;
+  double price = 2;
+}
+
+message ListCoinRequest {}
+
+service CurrencyCoinService {
+  rpc ListCoins(ListCoinRequest) returns (stream coinResponse);
+}
