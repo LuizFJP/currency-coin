@@ -24,6 +24,7 @@ const _ = grpc.SupportPackageIsVersion7
 type CurrencyCoinServiceClient interface {
 	CreateCoin(ctx context.Context, in *CreateCoinRequest, opts ...grpc.CallOption) (*CoinResponse, error)
 	ListCoins(ctx context.Context, in *ListCoinRequest, opts ...grpc.CallOption) (CurrencyCoinService_ListCoinsClient, error)
+	UpvoteCoin(ctx context.Context, in *CoinRequest, opts ...grpc.CallOption) (*CoinResponse, error)
 }
 
 type currencyCoinServiceClient struct {
@@ -75,12 +76,22 @@ func (x *currencyCoinServiceListCoinsClient) Recv() (*CoinResponse, error) {
 	return m, nil
 }
 
+func (c *currencyCoinServiceClient) UpvoteCoin(ctx context.Context, in *CoinRequest, opts ...grpc.CallOption) (*CoinResponse, error) {
+	out := new(CoinResponse)
+	err := c.cc.Invoke(ctx, "/service.CurrencyCoinService/UpvoteCoin", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // CurrencyCoinServiceServer is the server API for CurrencyCoinService service.
 // All implementations must embed UnimplementedCurrencyCoinServiceServer
 // for forward compatibility
 type CurrencyCoinServiceServer interface {
 	CreateCoin(context.Context, *CreateCoinRequest) (*CoinResponse, error)
 	ListCoins(*ListCoinRequest, CurrencyCoinService_ListCoinsServer) error
+	UpvoteCoin(context.Context, *CoinRequest) (*CoinResponse, error)
 	mustEmbedUnimplementedCurrencyCoinServiceServer()
 }
 
@@ -93,6 +104,9 @@ func (UnimplementedCurrencyCoinServiceServer) CreateCoin(context.Context, *Creat
 }
 func (UnimplementedCurrencyCoinServiceServer) ListCoins(*ListCoinRequest, CurrencyCoinService_ListCoinsServer) error {
 	return status.Errorf(codes.Unimplemented, "method ListCoins not implemented")
+}
+func (UnimplementedCurrencyCoinServiceServer) UpvoteCoin(context.Context, *CoinRequest) (*CoinResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UpvoteCoin not implemented")
 }
 func (UnimplementedCurrencyCoinServiceServer) mustEmbedUnimplementedCurrencyCoinServiceServer() {}
 
@@ -146,6 +160,24 @@ func (x *currencyCoinServiceListCoinsServer) Send(m *CoinResponse) error {
 	return x.ServerStream.SendMsg(m)
 }
 
+func _CurrencyCoinService_UpvoteCoin_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CoinRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(CurrencyCoinServiceServer).UpvoteCoin(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/service.CurrencyCoinService/UpvoteCoin",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(CurrencyCoinServiceServer).UpvoteCoin(ctx, req.(*CoinRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // CurrencyCoinService_ServiceDesc is the grpc.ServiceDesc for CurrencyCoinService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -156,6 +188,10 @@ var CurrencyCoinService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "createCoin",
 			Handler:    _CurrencyCoinService_CreateCoin_Handler,
+		},
+		{
+			MethodName: "UpvoteCoin",
+			Handler:    _CurrencyCoinService_UpvoteCoin_Handler,
 		},
 	},
 	Streams: []grpc.StreamDesc{
