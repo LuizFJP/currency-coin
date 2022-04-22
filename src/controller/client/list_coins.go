@@ -6,13 +6,12 @@ import (
 	"log"
 
 	pb "github.com/LuizFJP/currency-coin-grpc-go/proto"
-	"google.golang.org/protobuf/types/known/emptypb"
 )
 
 func listCoins(c pb.CurrencyCoinServiceClient) {
 	log.Println(("listCoins was invoked"))
 
-	stream, err := c.ListCoins(context.Background(), &pb.CoinResponse{})
+	stream, err := c.ListCoins(context.Background(), &pb.ListCoinRequest{})
 	log.Println("stream: ", stream)
 	if err != nil {
 		log.Fatalf("Error while calling listCoins: %v\n", err)
