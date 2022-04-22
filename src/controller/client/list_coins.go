@@ -12,14 +12,13 @@ func listCoins(c pb.CurrencyCoinServiceClient) {
 	log.Println(("listCoins was invoked"))
 
 	stream, err := c.ListCoins(context.Background(), &pb.ListCoinRequest{})
-	log.Println("stream: ", stream)
 	if err != nil {
 		log.Fatalf("Error while calling listCoins: %v\n", err)
 	}
 	
 	for {
 		res, err := stream.Recv()
-		log.Println(err)
+
 		if err == io.EOF {
 			break
 		}

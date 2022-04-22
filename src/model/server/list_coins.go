@@ -9,10 +9,9 @@ import (
 	"go.mongodb.org/mongo-driver/bson"
 	"google.golang.org/grpc/status"
 	"google.golang.org/grpc/codes"
-	"google.golang.org/protobuf/types/known/emptypb"
 )
 
-func (s *Server) ListCoins(in *emptypb.Empty, stream pb.CurrencyCoinService_ListCoinsServer) error {
+func (s *Server) ListCoins(_ *pb.ListCoinRequest, stream pb.CurrencyCoinService_ListCoinsServer) error {
 	log.Println("ListCoins was invoked")
 
 	cursor, err := collection.Find(context.Background(), bson.M{})
