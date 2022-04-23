@@ -22,5 +22,6 @@ message createCoinRequest {
 message ListCoinRequest {}
 
 service CurrencyCoinService {
+  rpc createCoin(createCoinRequest) returns (coinResponse);
   rpc ListCoins(ListCoinRequest) returns (stream coinResponse);
 }

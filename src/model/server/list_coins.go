@@ -30,7 +30,7 @@ log.Println(cursor)
 	for cursor.Next(context.Background()) {
 		data := &CoinItem{}
 		err := cursor.Decode(data)
-		log.Println(err)
+
 		if err != nil {
 			return status.Errorf(
 				codes.Internal,
