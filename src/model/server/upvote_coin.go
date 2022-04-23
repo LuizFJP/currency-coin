@@ -26,8 +26,20 @@ func (s *Server) UpvoteCoin(ctx context.Context, in *pb.CoinRequest) (*pb.CoinRe
 		Name: in.Name,
 	}
 	log.Println(data.Name)
-	err := collection.FindOne(context.TODO(), bson.D{primitive.E{Key: "Name", Value: data.Name}}).Decode(&result)
-
+	filter := bson.D{primitive.E{Key: "Name", Value: data.Name}}
+	update := bson.D{primitive.E{Key: "$inc", Value: bson.D{primitive.E{Key: "Vote", Value: 1}}}}
+	
+	_, err := collection.UpdateOne(context.TODO(), filter, update)
+	log.Println(err)
+	if err != nil {
+		return nil, status.Errorf(
+			codes.Internal,
+			fmt.Sprintf("Internal Error: %v", err),
+		)
+	}
+	
+	err = collection.FindOne(context.TODO(), bson.D{primitive.E{Key: "Name", Value: data.Name}}).Decode(&result)
+	// log.Println(result)
 	if err != nil {
 		return nil, status.Errorf(
 			codes.Internal,
@@ -37,6 +49,8 @@ func (s *Server) UpvoteCoin(ctx context.Context, in *pb.CoinRequest) (*pb.CoinRe
 
 	return &pb.CoinResponse{
 		Name: result.Name,
-
+		Price: result.Price,
+		Vote: result.Vote,
+		
 	}, nil
 }
