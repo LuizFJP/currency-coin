@@ -1,7 +1,7 @@
 package main
 
 import (
-	pb "github.com/LuizFJP/currency-coin-grpc-go/proto"
+	pb "LuizFJP/currency-coin-grpc-go/proto"
 )
 
 type CoinItem struct {

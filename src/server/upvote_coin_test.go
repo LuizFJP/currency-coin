@@ -4,11 +4,12 @@ import (
 	"context"
 	"testing"
 
-	pb "github.com/LuizFJP/currency-coin-grpc-go/proto"
+	pb "LuizFJP/currency-coin-grpc-go/proto"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo/integration/mtest"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
+
 )
 
 func TestUpdate(t *testing.T) {
@@ -25,18 +26,7 @@ func TestUpdate(t *testing.T) {
 	mt := mtest.New(t, mtest.NewOptions().ClientType(mtest.Mock))
 	defer mt.Close()
 
-	mt.Run("Succes", func(mt *mtest.T) {
-		collection = mt.Coll
-
-		mt.AddMockResponses(bson.D{
-			{Key: "ok", Value: 1},
-
-		})
-		UpdateByName("BTC")
-    
-	})
-
-	mt.Run("Success", func(mt *mtest.T) {
+	mt.Run("Success to upvote", func(mt *mtest.T) {
 		collection = mt.Coll
 		fakeCoin := &CoinItem{
 			Name: "BTC",
@@ -48,10 +38,16 @@ func TestUpdate(t *testing.T) {
 			{Key: "ok", Value: 1},
 		})
 
+		mt.AddMockResponses(mtest.CreateCursorResponse(1, "foo.bar", mtest.FirstBatch, bson.D{
+			{Key: "name", Value: "BTC"},
+			{Key: "price", Value: 1.300000},
+			{Key: "vote", Value: 2501},
+		}))
+
 		req := &pb.CoinRequest{Name: fakeCoin.Name}
 		_, err := c.UpvoteCoin(context.Background(), req)
 
-		if err == nil {
+		if err != nil {
 			t.Errorf("Something went wrong: %v", err)
 		}
 	})

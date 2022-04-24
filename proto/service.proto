@@ -2,7 +2,7 @@ syntax = "proto3";
 
 package service;
 
-option go_package = "github.com/LuizFJP/currency-coin-grpc-go/proto";
+option go_package = "LuizFJP/currency-coin-grpc-go/server/proto";
 
 message coinRequest {
   string name = 1;
