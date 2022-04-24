@@ -3,7 +3,6 @@ package main
 import (
 	"context"
 	"fmt"
-	"log"
 
 	pb "github.com/LuizFJP/currency-coin-grpc-go/proto"
 	"go.mongodb.org/mongo-driver/bson"
@@ -12,7 +11,6 @@ import (
 )
 
 func (s *Server) ListCoins(_ *pb.ListCoinRequest, stream pb.CurrencyCoinService_ListCoinsServer) error {
-	log.Println("ListCoins was invoked")
 
 	cursor, err := collection.Find(context.Background(), bson.M{})
 
