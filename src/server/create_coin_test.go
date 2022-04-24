@@ -2,7 +2,6 @@ package main
 
 import (
 	"context"
-	"log"
 	"testing"
 
 	pb "github.com/LuizFJP/currency-coin-grpc-go/proto"
@@ -37,12 +36,11 @@ func TestCreateCoin(t *testing.T) {
 		}
 
 	req := &pb.CreateCoinRequest{Name: fakeCoin.Name, Price: fakeCoin.Price}
-	res, err := client.CreateCoin(context.Background(), req)
+	_, err := client.CreateCoin(context.Background(), req)
 
 	if err != nil {
 		t.Errorf("HelloTest(%v) got unexpected error", err)
 }
-log.Println("test:", res)
 
 },
 	)}
