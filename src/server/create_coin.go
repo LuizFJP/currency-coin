@@ -3,6 +3,7 @@ package main
 import (
 	"context"
 	"fmt"
+	"log"
 
 	pb "github.com/LuizFJP/currency-coin-grpc-go/proto"
 	"google.golang.org/grpc/codes"
@@ -10,7 +11,7 @@ import (
 )
 
 func (s *Server) CreateCoin(ctx context.Context, in *pb.CreateCoinRequest) (*pb.CoinResponse, error) {
-
+	log.Println("Create was invoked")
 	data := CoinItem {
 		Name: in.Name,
 		Price: in.Price,

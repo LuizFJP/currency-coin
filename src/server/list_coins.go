@@ -25,8 +25,6 @@ func (s *Server) ListCoins(_ *pb.ListCoinRequest, stream pb.CurrencyCoinService_
 
 defer cursor.Close(context.Background())
 
-log.Println(cursor)
-
 	for cursor.Next(context.Background()) {
 		data := &CoinItem{}
 		err := cursor.Decode(data)
