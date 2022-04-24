@@ -4,8 +4,9 @@ import (
 	"context"
 	"fmt"
 
-	pb "github.com/LuizFJP/currency-coin-grpc-go/proto"
+	pb "LuizFJP/currency-coin-grpc-go/proto"
 	"go.mongodb.org/mongo-driver/bson"
+
 	"google.golang.org/grpc/status"
 	"google.golang.org/grpc/codes"
 )

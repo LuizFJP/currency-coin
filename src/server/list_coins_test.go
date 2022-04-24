@@ -5,7 +5,7 @@ import (
 	"io"
 	"testing"
 
-	pb "github.com/LuizFJP/currency-coin-grpc-go/proto"
+	pb "LuizFJP/currency-coin-grpc-go/proto"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo/integration/mtest"
 	"google.golang.org/grpc"

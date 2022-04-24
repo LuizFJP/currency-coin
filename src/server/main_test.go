@@ -5,7 +5,7 @@ import (
 	"log"
 	"net"
 
-	pb "github.com/LuizFJP/currency-coin-grpc-go/proto"
+	pb "LuizFJP/currency-coin-grpc-go/proto"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/test/bufconn"
 )

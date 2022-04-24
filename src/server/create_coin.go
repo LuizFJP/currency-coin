@@ -7,29 +7,28 @@ import (
 
 	// "log"
 
-	pb "github.com/LuizFJP/currency-coin-grpc-go/proto"
-	// "github.com/go-playground/validator/v10"
+	pb "LuizFJP/currency-coin-grpc-go/proto"
 	"github.com/go-ozzo/ozzo-validation/v4"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 )
 
-func (a CoinItem) Validate() error {
+func (a CoinItem) CreateValidate() error {
+
 	return validation.ValidateStruct(&a,
 		validation.Field(&a.Name, validation.Required),
-		// validation
+		validation.Field(&a.Price, validation.Required),
 	)
 }
 
 func (s *Server) CreateCoin(ctx context.Context, in *pb.CreateCoinRequest) (*pb.CoinResponse, error) {
-	
 	
 	data := &CoinItem {
 		Name: in.Name,
 		Price: in.Price,
 		Vote: 0,
 	}
-	err := data.Validate()
+	err := data.CreateValidate()
 	log.Print(err)
 	// validate:= validator.New()
 	// err := validate.Struct(data)

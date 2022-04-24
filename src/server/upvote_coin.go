@@ -3,27 +3,24 @@ package main
 import (
 	"context"
 	"fmt"
+	"log"
 
-	pb "github.com/LuizFJP/currency-coin-grpc-go/proto"
+	pb "LuizFJP/currency-coin-grpc-go/proto"
+
+	"github.com/go-ozzo/ozzo-validation/v4"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 )
 
-type test struct {
-	Id string `bson:"_id"`
-	Name string `bson:"name"`
-	Price float64 `bson:"price"`
-	Vote int64 `bson:"vote"`
-}
-
 func UpdateByName(name string) (error) {
-	filter := bson.D{primitive.E{Key: "Name", Value: name}}
-	update := bson.D{primitive.E{Key: "$inc", Value: bson.D{primitive.E{Key: "Vote", Value: 1}}}}
+	log.Println(name)
+	filter := bson.D{primitive.E{Key: "name", Value: name}}
+	update := bson.D{primitive.E{Key: "$inc", Value: bson.D{primitive.E{Key: "vote", Value: 1}}}}
 	
 	_, err := collection.UpdateOne(context.TODO(), filter, update)
-	
+	log.Println(err)
 	if err != nil {
 		return status.Errorf(
 			codes.Internal,
@@ -34,20 +31,35 @@ func UpdateByName(name string) (error) {
 
 }
 
+func (a CoinItem) UpdateValidate() error {
+
+	return validation.ValidateStruct(&a,
+		validation.Field(&a.Name, validation.Required),
+	)
+}
+
 func (s *Server) UpvoteCoin(ctx context.Context, in *pb.CoinRequest) (*pb.CoinResponse, error) {
-	result := &test{}
-	data := test {
+	result := &CoinItem{}
+	data := CoinItem {
 		Name: in.Name,
 	}
 
-	err := UpdateByName(data.Name)
+	err := data.UpdateValidate()
+	if err != nil {
+		return nil, fmt.Errorf(
+			codes.InvalidArgument.String(),
+			fmt.Sprint(err),
+		)
+	}
+	err = UpdateByName(data.Name)
 
 	if err != nil {
 		return nil, err
 	}
 	
-	err = collection.FindOne(context.TODO(), bson.D{primitive.E{Key: "Name", Value: data.Name}}).Decode(&result)
-
+	err = collection.FindOne(context.TODO(), bson.D{primitive.E{Key: "name", Value: data.Name}}).Decode(&result)
+	log.Println(err)
+	
 	if err != nil {
 		return nil, status.Errorf(
 			codes.Internal,
