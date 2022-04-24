@@ -8,7 +8,10 @@ import (
 	// "log"
 
 	pb "LuizFJP/currency-coin-grpc-go/proto"
+
 	"github.com/go-ozzo/ozzo-validation/v4"
+	"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 )
@@ -21,6 +24,22 @@ func (a CoinItem) CreateValidate() error {
 	)
 }
 
+func checkCoin(name string) error {
+	result := &CoinItem{}
+	filter := bson.D{primitive.E{Key: "name", Value: name}}
+	collection.FindOne(context.TODO(), filter).Decode(&result)
+	
+	log.Print(result.Name)
+	if result.Name == name {
+		return status.Error(
+			codes.AlreadyExists,
+			"Can't create coin with an existing name",
+		)
+	}
+
+	return nil
+}
+
 func (s *Server) CreateCoin(ctx context.Context, in *pb.CreateCoinRequest) (*pb.CoinResponse, error) {
 	
 	data := &CoinItem {
@@ -30,17 +49,12 @@ func (s *Server) CreateCoin(ctx context.Context, in *pb.CreateCoinRequest) (*pb.
 	}
 	err := data.CreateValidate()
 	log.Print(err)
-	// validate:= validator.New()
-	// err := validate.Struct(data)
-	// validationErrors := err.(validator.ValidationErrors)
 
-	// log.Println(validationErrors.Error())
-	// if validationErrors != nil {
-	// 	return nil, status.Errorf(
-	// 		codes.InvalidArgument,
-	// 		fmt.Sprint(validationErrors.Error()),
-	// 	)
-	// }
+	err = checkCoin(data.Name)
+
+	if err != nil {
+		return nil, err
+	}
 
 	_, err = collection.InsertOne(ctx, data)
 
@@ -50,7 +64,7 @@ func (s *Server) CreateCoin(ctx context.Context, in *pb.CreateCoinRequest) (*pb.
 			fmt.Sprintf("Internal error: %v", err),
 		)
 	}
-
+log.Print(data)
 	return &pb.CoinResponse{
 		Name: data.Name,
 		Price: data.Price,

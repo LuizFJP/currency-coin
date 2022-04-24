@@ -15,12 +15,11 @@ import (
 )
 
 func UpdateByName(name string) (error) {
-	log.Println(name)
 	filter := bson.D{primitive.E{Key: "name", Value: name}}
 	update := bson.D{primitive.E{Key: "$inc", Value: bson.D{primitive.E{Key: "vote", Value: 1}}}}
 	
 	_, err := collection.UpdateOne(context.TODO(), filter, update)
-	log.Println(err)
+
 	if err != nil {
 		return status.Errorf(
 			codes.Internal,
