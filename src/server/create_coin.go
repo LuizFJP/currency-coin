@@ -45,6 +45,10 @@ func (s *Server) CreateCoin(ctx context.Context, in *pb.CreateCoinRequest) (*pb.
 	}
 	err := data.CreateValidate()
 
+	if err != nil {
+		return nil, err
+	}
+
 	err = checkCoin(data.Name)
 
 	if err != nil {
