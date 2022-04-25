@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+
 	"testing"
 
 	pb "LuizFJP/currency-coin-grpc-go/proto"
@@ -82,7 +83,68 @@ func TestCreateCoin(t *testing.T) {
 		if err == nil {
 			t.Error("CreateCoin is creating a repeated coin with existing name")
 	}
+	},
+		)
+	}
+
+	func TestRequiredName(t *testing.T) {
+		ctx := context.Background()
+		creds := grpc.WithTransportCredentials(insecure.NewCredentials())
+		conn, err := grpc.DialContext(ctx, "bufnet", grpc.WithContextDialer(bufDialer), creds)
+
+		if err != nil {
+			t.Fatalf("Failed to dial bufnet: %v", err)
+		}
+
+		defer conn.Close()
+		client := pb.NewCurrencyCoinServiceClient(conn)
+		mt := mtest.New(t, mtest.NewOptions().ClientType(mtest.Mock))
+		defer mt.Close()
+
+		mt.Run("It's not possible to create a coin when name is not passed", func(mt *mtest.T) {
+			collection = mt.Coll
 	
+			fakeCoin := &pb.CreateCoinRequest{
+				Price:    0.0006,
+			}
+	
+		req := &pb.CreateCoinRequest{Price: fakeCoin.Price}
+		_, err := client.CreateCoin(context.Background(), req)
+
+		if err == nil {
+			t.Error("TestRequiredName is not checking blank field name")
+	}
+	},
+		)
+	}
+
+	func TestRequiredPrice(t *testing.T) {
+		ctx := context.Background()
+		creds := grpc.WithTransportCredentials(insecure.NewCredentials())
+		conn, err := grpc.DialContext(ctx, "bufnet", grpc.WithContextDialer(bufDialer), creds)
+
+		if err != nil {
+			t.Fatalf("Failed to dial bufnet: %v", err)
+		}
+
+		defer conn.Close()
+		client := pb.NewCurrencyCoinServiceClient(conn)
+		mt := mtest.New(t, mtest.NewOptions().ClientType(mtest.Mock))
+		defer mt.Close()
+
+		mt.Run("It's not possible to create a coin when price is not passed", func(mt *mtest.T) {
+			collection = mt.Coll
+
+			fakeCoin := &pb.CreateCoinRequest{
+				Name: "Ethereum",
+			}
+	
+		req := &pb.CreateCoinRequest{Price: fakeCoin.Price}
+		_, err := client.CreateCoin(context.Background(), req)
+
+		if err == nil {
+			t.Error("TestRequiredPrice is not checking blank field price")
+	}
 	},
 		)
 	}

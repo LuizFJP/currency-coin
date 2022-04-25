@@ -29,7 +29,6 @@ func checkCoin(name string) error {
 	filter := bson.D{primitive.E{Key: "name", Value: name}}
 	collection.FindOne(context.TODO(), filter).Decode(&result)
 	
-	log.Print("test", result)
 	if result.Name == name {
 		return status.Error(
 			codes.AlreadyExists,
