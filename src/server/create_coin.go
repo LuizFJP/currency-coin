@@ -3,9 +3,6 @@ package main
 import (
 	"context"
 	"fmt"
-	"log"
-
-	// "log"
 
 	pb "LuizFJP/currency-coin-grpc-go/proto"
 
@@ -47,7 +44,6 @@ func (s *Server) CreateCoin(ctx context.Context, in *pb.CreateCoinRequest) (*pb.
 		Vote: 0,
 	}
 	err := data.CreateValidate()
-	log.Print(err)
 
 	err = checkCoin(data.Name)
 
@@ -63,7 +59,7 @@ func (s *Server) CreateCoin(ctx context.Context, in *pb.CreateCoinRequest) (*pb.
 			fmt.Sprintf("Internal error: %v", err),
 		)
 	}
-log.Print(data)
+
 	return &pb.CoinResponse{
 		Name: data.Name,
 		Price: data.Price,

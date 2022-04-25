@@ -3,7 +3,6 @@ package main
 import (
 	"context"
 	"fmt"
-	"log"
 
 	pb "LuizFJP/currency-coin-grpc-go/proto"
 
@@ -14,6 +13,13 @@ import (
 	"google.golang.org/grpc/status"
 )
 
+func (a CoinItem) UpdateValidate() error {
+
+	return validation.ValidateStruct(&a,
+		validation.Field(&a.Name, validation.Required),
+	)
+}
+
 func UpdateByName(name string) (error) {
 	filter := bson.D{primitive.E{Key: "name", Value: name}}
 	update := bson.D{primitive.E{Key: "$inc", Value: bson.D{primitive.E{Key: "vote", Value: 1}}}}
@@ -21,20 +27,13 @@ func UpdateByName(name string) (error) {
 	_, err := collection.UpdateOne(context.TODO(), filter, update)
 
 	if err != nil {
-		return status.Errorf(
+		return status.Error(
 			codes.Internal,
-			fmt.Sprintf("Internal Error: %v", err),
+			"It's not possible to upvote. Coin doesn't exist",
 		)
 	}
 	return nil
 
-}
-
-func (a CoinItem) UpdateValidate() error {
-
-	return validation.ValidateStruct(&a,
-		validation.Field(&a.Name, validation.Required),
-	)
 }
 
 func (s *Server) UpvoteCoin(ctx context.Context, in *pb.CoinRequest) (*pb.CoinResponse, error) {
@@ -57,7 +56,6 @@ func (s *Server) UpvoteCoin(ctx context.Context, in *pb.CoinRequest) (*pb.CoinRe
 	}
 	
 	err = collection.FindOne(context.TODO(), bson.D{primitive.E{Key: "name", Value: data.Name}}).Decode(&result)
-	log.Println(err)
 	
 	if err != nil {
 		return nil, status.Errorf(
