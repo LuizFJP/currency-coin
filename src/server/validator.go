@@ -12,7 +12,7 @@ func (a CoinItem) UpdateValidate() error {
 func (a CoinItem) CreateValidate() error {
 
 	return validation.ValidateStruct(&a,
-		validation.Field(&a.Name, validation.Required, validation.StringOrBytes()),
+		validation.Field(&a.Name, validation.Required),
 		validation.Field(&a.Price, validation.Required),
 	)
 }
