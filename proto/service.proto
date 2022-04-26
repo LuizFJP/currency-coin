@@ -21,9 +21,14 @@ message createCoinRequest {
 
 message ListCoinRequest {}
 
+message DeleteResponse {
+  string message = 1;
+}
+
 service CurrencyCoinService {
   rpc createCoin(createCoinRequest) returns (coinResponse);
   rpc ListCoins(ListCoinRequest) returns (stream coinResponse);
   rpc UpvoteCoin(coinRequest) returns (coinResponse);
   rpc DownvoteCoin(coinRequest) returns (coinResponse);
+  rpc Delete(coinRequest) returns (DeleteResponse);
 }

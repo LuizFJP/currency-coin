@@ -2,7 +2,7 @@ package main
 
 import validation "github.com/go-ozzo/ozzo-validation/v4"
 
-func (a CoinItem) UpdateValidate() error {
+func (a CoinItem) NameValidate() error {
 
 	return validation.ValidateStruct(&a,
 		validation.Field(&a.Name, validation.Required),

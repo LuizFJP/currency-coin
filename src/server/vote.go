@@ -32,7 +32,7 @@ func Vote(in *pb.CoinRequest, increment int) (*CoinItem, error){
 		Name: in.Name,
 	}
 
-	err := data.UpdateValidate()
+	err := data.NameValidate()
 	if err != nil {
 		return nil, fmt.Errorf(
 			codes.InvalidArgument.String(),
