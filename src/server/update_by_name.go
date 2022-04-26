@@ -2,11 +2,13 @@ package main
 
 import (
 	"context"
+	"fmt"
 
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
+	pb "LuizFJP/currency-coin-grpc-go/proto"
 )
 
 func UpdateByName(name string, increment int) (error) {
@@ -22,5 +24,35 @@ func UpdateByName(name string, increment int) (error) {
 		)
 	}
 	return nil
+}
 
+func Vote(in *pb.CoinRequest, increment int) (*CoinItem, error){
+	result := &CoinItem{}
+	data := &CoinItem {
+		Name: in.Name,
+	}
+
+	err := data.UpdateValidate()
+	if err != nil {
+		return nil, fmt.Errorf(
+			codes.InvalidArgument.String(),
+			fmt.Sprint(err),
+		)
+	}
+	err = UpdateByName(data.Name, increment)
+
+	if err != nil {
+		return nil, err
+	}
+	
+	err = collection.FindOne(context.TODO(), bson.D{primitive.E{Key: "name", Value: data.Name}}).Decode(&result)
+	
+	if err != nil {
+		return nil, status.Errorf(
+			codes.Internal,
+			fmt.Sprintf("Internal Error: %v", err),
+		)
+	}
+
+	return result, nil
 }
