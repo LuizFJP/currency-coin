@@ -207,10 +207,10 @@ Exemplo de response:
 ```
 
 ### Fontes de estudos:
-Documentação do mongoDB \
-Documentação do gRPC \
-Documentação do GO \
-Documentação do mongodb driver \
+Documentação do mongoDB(https://www.mongodb.com/docs/) \
+Documentação do gRPC(https://grpc.io/docs/) \
+Documentação do GO(https://go.dev/doc/) \
+Documentação do mongodb driver(https://www.mongodb.com/docs/drivers/go/current/) \
 Indispensável mencionar o uso de diversos tutoriais no Youtube, StackOverFLow, GitHub e o Médium. \
 
 ---
