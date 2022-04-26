@@ -1,14 +1,14 @@
 package main
 
 import (
-	"context"
 	"fmt"
-
-	pb "LuizFJP/currency-coin-grpc-go/proto"
-	"go.mongodb.org/mongo-driver/bson"
-
-	"google.golang.org/grpc/status"
+	"context"
 	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/status"
+	"go.mongodb.org/mongo-driver/bson"
+	
+	pb "LuizFJP/currency-coin-grpc-go/proto"
+	
 )
 
 func (s *Server) ListCoins(_ *pb.ListCoinRequest, stream pb.CurrencyCoinService_ListCoinsServer) error {

@@ -2,7 +2,7 @@ syntax = "proto3";
 
 package service;
 
-option go_package = "LuizFJP/currency-coin-grpc-go/server/proto";
+option go_package = "LuizFJP/currency-coin-grpc-go/proto";
 
 message coinRequest {
   string name = 1;
@@ -25,5 +25,5 @@ service CurrencyCoinService {
   rpc createCoin(createCoinRequest) returns (coinResponse);
   rpc ListCoins(ListCoinRequest) returns (stream coinResponse);
   rpc UpvoteCoin(coinRequest) returns (coinResponse);
-  rpc LiveOneCoin(coinRequest) returns (stream coinResponse);
+  rpc DownvoteCoin(coinRequest) returns (coinResponse);
 }
