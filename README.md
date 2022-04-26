@@ -206,7 +206,7 @@ Exemplo de response:
 }
 ```
 
-### Fontes de estudos:
+### Fontes de estudo:
 [Documentação do mongoDB](https://www.mongodb.com/docs/) \
 [Documentação do gRPC](https://grpc.io/docs/) \
 [Documentação do GO](https://go.dev/doc/) \
