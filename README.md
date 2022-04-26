@@ -46,7 +46,7 @@ Para **instalar as bibliotecas** necessárias da aplicação, rode na raiz do pr
 
 Para **inicializar o servidor**, rode na raiz do projeto o comando: ```make server```
 
-### Pronto!!! Seu servidor já está pronto. É esperada a seguinte mensagem:
+### Perfeito!!! Seu servidor já está pronto. É esperada a seguinte mensagem:
 ```
 Currency Coin Service Started
 2022/04/26 05:20:11 Listening on 0.0.0.0:50051
