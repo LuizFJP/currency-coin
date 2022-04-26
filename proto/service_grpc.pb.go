@@ -25,6 +25,8 @@ type CurrencyCoinServiceClient interface {
 	CreateCoin(ctx context.Context, in *CreateCoinRequest, opts ...grpc.CallOption) (*CoinResponse, error)
 	ListCoins(ctx context.Context, in *ListCoinRequest, opts ...grpc.CallOption) (CurrencyCoinService_ListCoinsClient, error)
 	UpvoteCoin(ctx context.Context, in *CoinRequest, opts ...grpc.CallOption) (*CoinResponse, error)
+	DownvoteCoin(ctx context.Context, in *CoinRequest, opts ...grpc.CallOption) (*CoinResponse, error)
+	Delete(ctx context.Context, in *CoinRequest, opts ...grpc.CallOption) (*DeleteResponse, error)
 }
 
 type currencyCoinServiceClient struct {
@@ -85,6 +87,24 @@ func (c *currencyCoinServiceClient) UpvoteCoin(ctx context.Context, in *CoinRequ
 	return out, nil
 }
 
+func (c *currencyCoinServiceClient) DownvoteCoin(ctx context.Context, in *CoinRequest, opts ...grpc.CallOption) (*CoinResponse, error) {
+	out := new(CoinResponse)
+	err := c.cc.Invoke(ctx, "/service.CurrencyCoinService/DownvoteCoin", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *currencyCoinServiceClient) Delete(ctx context.Context, in *CoinRequest, opts ...grpc.CallOption) (*DeleteResponse, error) {
+	out := new(DeleteResponse)
+	err := c.cc.Invoke(ctx, "/service.CurrencyCoinService/Delete", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // CurrencyCoinServiceServer is the server API for CurrencyCoinService service.
 // All implementations must embed UnimplementedCurrencyCoinServiceServer
 // for forward compatibility
@@ -92,6 +112,8 @@ type CurrencyCoinServiceServer interface {
 	CreateCoin(context.Context, *CreateCoinRequest) (*CoinResponse, error)
 	ListCoins(*ListCoinRequest, CurrencyCoinService_ListCoinsServer) error
 	UpvoteCoin(context.Context, *CoinRequest) (*CoinResponse, error)
+	DownvoteCoin(context.Context, *CoinRequest) (*CoinResponse, error)
+	Delete(context.Context, *CoinRequest) (*DeleteResponse, error)
 	mustEmbedUnimplementedCurrencyCoinServiceServer()
 }
 
@@ -107,6 +129,12 @@ func (UnimplementedCurrencyCoinServiceServer) ListCoins(*ListCoinRequest, Curren
 }
 func (UnimplementedCurrencyCoinServiceServer) UpvoteCoin(context.Context, *CoinRequest) (*CoinResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UpvoteCoin not implemented")
+}
+func (UnimplementedCurrencyCoinServiceServer) DownvoteCoin(context.Context, *CoinRequest) (*CoinResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DownvoteCoin not implemented")
+}
+func (UnimplementedCurrencyCoinServiceServer) Delete(context.Context, *CoinRequest) (*DeleteResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Delete not implemented")
 }
 func (UnimplementedCurrencyCoinServiceServer) mustEmbedUnimplementedCurrencyCoinServiceServer() {}
 
@@ -178,6 +206,42 @@ func _CurrencyCoinService_UpvoteCoin_Handler(srv interface{}, ctx context.Contex
 	return interceptor(ctx, in, info, handler)
 }
 
+func _CurrencyCoinService_DownvoteCoin_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CoinRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(CurrencyCoinServiceServer).DownvoteCoin(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/service.CurrencyCoinService/DownvoteCoin",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(CurrencyCoinServiceServer).DownvoteCoin(ctx, req.(*CoinRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _CurrencyCoinService_Delete_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CoinRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(CurrencyCoinServiceServer).Delete(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/service.CurrencyCoinService/Delete",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(CurrencyCoinServiceServer).Delete(ctx, req.(*CoinRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // CurrencyCoinService_ServiceDesc is the grpc.ServiceDesc for CurrencyCoinService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -192,6 +256,14 @@ var CurrencyCoinService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "UpvoteCoin",
 			Handler:    _CurrencyCoinService_UpvoteCoin_Handler,
+		},
+		{
+			MethodName: "DownvoteCoin",
+			Handler:    _CurrencyCoinService_DownvoteCoin_Handler,
+		},
+		{
+			MethodName: "Delete",
+			Handler:    _CurrencyCoinService_Delete_Handler,
 		},
 	},
 	Streams: []grpc.StreamDesc{

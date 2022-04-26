@@ -74,7 +74,7 @@ func TestNotExistedCoin(t *testing.T) {
 		}
 
 		mt.AddMockResponses(bson.D{
-			{Key: "0", Value: 0},
+			{Key: "ok", Value: 0},
 		})
 
 		req := &pb.CoinRequest{Name: fakeCoin.Name}

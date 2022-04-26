@@ -6,20 +6,11 @@ import (
 
 	pb "LuizFJP/currency-coin-grpc-go/proto"
 
-	"github.com/go-ozzo/ozzo-validation/v4"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 )
-
-func (a CoinItem) CreateValidate() error {
-
-	return validation.ValidateStruct(&a,
-		validation.Field(&a.Name, validation.Required),
-		validation.Field(&a.Price, validation.Required),
-	)
-}
 
 func checkCoin(name string) error {
 	result := &CoinItem{}
