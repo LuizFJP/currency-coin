@@ -30,7 +30,7 @@ func TestCreateCoin(t *testing.T) {
 
 	mt.Run("It's possible to create a new coin", func(mt *mtest.T) {
 		collection = mt.Coll
-		mt.AddMockResponses(bson.D{{Key: "0", Value: "0"}})
+		mt.AddMockResponses(bson.D{{Key: "ok", Value: 0}})
 
 		mt.AddMockResponses(mtest.CreateSuccessResponse())
 
