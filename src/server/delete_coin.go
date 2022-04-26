@@ -24,7 +24,7 @@ func (s *Server) Delete(ctx context.Context, in *pb.CoinRequest) (*pb.DeleteResp
 		)
 	}
 
-	filter := bson.D{primitive.E{Key: "Name", Value: data.Name}}
+	filter := bson.D{primitive.E{Key: "name", Value: data.Name}}
 	
 	result, err := collection.DeleteOne(context.TODO(), filter)
 
