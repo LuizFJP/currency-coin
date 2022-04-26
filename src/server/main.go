@@ -24,8 +24,8 @@ type Server struct {
 
 func main() {
 
-	client, err := mongo.NewClient(options.Client().ApplyURI("mongodb://localhost:27017"))
-
+	client, err := mongo.NewClient(options.Client().ApplyURI("mongodb+srv://luiz-portela:klever-challenge@cluster0.viwro.mongodb.net/coinsdb?retryWrites=true&w=majority"))
+	
 	if err != nil {
 		log.Fatal(err)
 	}
