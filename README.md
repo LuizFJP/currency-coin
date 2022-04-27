@@ -51,7 +51,7 @@ Para **"buildar" o servidor**, rode na raiz do projeto o comando: ```make build`
 
 Para **inicializar o servidor**, rode na raiz do projeto o comando: ```make server```
 
-### Pronto!!! Seu servidor já está pronto. É esperada a seguinte mensagem:
+### Perfeito!!! Seu servidor já está pronto. É esperada a seguinte mensagem:
 ```
 Currency Coin Service Started
 2022/04/26 05:20:11 Listening on 0.0.0.0:50051
@@ -211,11 +211,11 @@ Exemplo de response:
 }
 ```
 
-### Fontes de estudos:
-Documentação do mongoDB \
-Documentação do gRPC \
-Documentação do GO \
-Documentação do mongodb driver \
+### Fontes de estudo:
+[Documentação do mongoDB](https://www.mongodb.com/docs/) \
+[Documentação do gRPC](https://grpc.io/docs/) \
+[Documentação do GO](https://go.dev/doc/) \
+[Documentação do mongodb driver](https://www.mongodb.com/docs/drivers/go/current/) \
 Indispensável mencionar o uso de diversos tutoriais no Youtube, StackOverFLow, GitHub e o Médium.
 
 ---
