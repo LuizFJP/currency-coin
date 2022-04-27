@@ -42,7 +42,12 @@ git clone git@github.com:LuizFJP/KLEVER-CHALLENGE-currency-coin.git
 ---------
 ## Setup e server
 
+### Rode em sequência os comandos:
+
+
 Para **instalar as bibliotecas** necessárias da aplicação, rode na raiz do projeto o comando: ```make mod``` 
+
+Para **"buildar" o servidor**, rode na raiz do projeto o comando: ```make build```
 
 Para **inicializar o servidor**, rode na raiz do projeto o comando: ```make server```
 
@@ -211,7 +216,7 @@ Documentação do mongoDB \
 Documentação do gRPC \
 Documentação do GO \
 Documentação do mongodb driver \
-Indispensável mencionar o uso de diversos tutoriais no Youtube, StackOverFLow, GitHub e o Médium. \
+Indispensável mencionar o uso de diversos tutoriais no Youtube, StackOverFLow, GitHub e o Médium.
 
 ---
 ## Sugestões e feedbacks serão sempre bem-vindos :)
