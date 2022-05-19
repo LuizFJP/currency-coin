@@ -4,11 +4,12 @@ import (
 	"context"
 	"fmt"
 
+	pb "LuizFJP/currency-coin-grpc-go/proto"
+
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
-	pb "LuizFJP/currency-coin-grpc-go/proto"
 )
 
 func UpdateByName(name string, increment int) (error) {

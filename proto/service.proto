@@ -29,6 +29,7 @@ service CurrencyCoinService {
   rpc createCoin(createCoinRequest) returns (coinResponse);
   rpc ListCoins(ListCoinRequest) returns (stream coinResponse);
   rpc UpvoteCoin(coinRequest) returns (coinResponse);
+  rpc VoteCoin(coinRequest) returns (stream coinResponse);
   rpc DownvoteCoin(coinRequest) returns (coinResponse);
   rpc Delete(coinRequest) returns (DeleteResponse);
 }

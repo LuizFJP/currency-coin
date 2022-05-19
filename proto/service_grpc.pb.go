@@ -25,6 +25,7 @@ type CurrencyCoinServiceClient interface {
 	CreateCoin(ctx context.Context, in *CreateCoinRequest, opts ...grpc.CallOption) (*CoinResponse, error)
 	ListCoins(ctx context.Context, in *ListCoinRequest, opts ...grpc.CallOption) (CurrencyCoinService_ListCoinsClient, error)
 	UpvoteCoin(ctx context.Context, in *CoinRequest, opts ...grpc.CallOption) (*CoinResponse, error)
+	VoteCoin(ctx context.Context, in *CoinRequest, opts ...grpc.CallOption) (CurrencyCoinService_VoteCoinClient, error)
 	DownvoteCoin(ctx context.Context, in *CoinRequest, opts ...grpc.CallOption) (*CoinResponse, error)
 	Delete(ctx context.Context, in *CoinRequest, opts ...grpc.CallOption) (*DeleteResponse, error)
 }
@@ -87,6 +88,38 @@ func (c *currencyCoinServiceClient) UpvoteCoin(ctx context.Context, in *CoinRequ
 	return out, nil
 }
 
+func (c *currencyCoinServiceClient) VoteCoin(ctx context.Context, in *CoinRequest, opts ...grpc.CallOption) (CurrencyCoinService_VoteCoinClient, error) {
+	stream, err := c.cc.NewStream(ctx, &CurrencyCoinService_ServiceDesc.Streams[1], "/service.CurrencyCoinService/VoteCoin", opts...)
+	if err != nil {
+		return nil, err
+	}
+	x := &currencyCoinServiceVoteCoinClient{stream}
+	if err := x.ClientStream.SendMsg(in); err != nil {
+		return nil, err
+	}
+	if err := x.ClientStream.CloseSend(); err != nil {
+		return nil, err
+	}
+	return x, nil
+}
+
+type CurrencyCoinService_VoteCoinClient interface {
+	Recv() (*CoinResponse, error)
+	grpc.ClientStream
+}
+
+type currencyCoinServiceVoteCoinClient struct {
+	grpc.ClientStream
+}
+
+func (x *currencyCoinServiceVoteCoinClient) Recv() (*CoinResponse, error) {
+	m := new(CoinResponse)
+	if err := x.ClientStream.RecvMsg(m); err != nil {
+		return nil, err
+	}
+	return m, nil
+}
+
 func (c *currencyCoinServiceClient) DownvoteCoin(ctx context.Context, in *CoinRequest, opts ...grpc.CallOption) (*CoinResponse, error) {
 	out := new(CoinResponse)
 	err := c.cc.Invoke(ctx, "/service.CurrencyCoinService/DownvoteCoin", in, out, opts...)
@@ -112,6 +145,7 @@ type CurrencyCoinServiceServer interface {
 	CreateCoin(context.Context, *CreateCoinRequest) (*CoinResponse, error)
 	ListCoins(*ListCoinRequest, CurrencyCoinService_ListCoinsServer) error
 	UpvoteCoin(context.Context, *CoinRequest) (*CoinResponse, error)
+	VoteCoin(*CoinRequest, CurrencyCoinService_VoteCoinServer) error
 	DownvoteCoin(context.Context, *CoinRequest) (*CoinResponse, error)
 	Delete(context.Context, *CoinRequest) (*DeleteResponse, error)
 	mustEmbedUnimplementedCurrencyCoinServiceServer()
@@ -129,6 +163,9 @@ func (UnimplementedCurrencyCoinServiceServer) ListCoins(*ListCoinRequest, Curren
 }
 func (UnimplementedCurrencyCoinServiceServer) UpvoteCoin(context.Context, *CoinRequest) (*CoinResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UpvoteCoin not implemented")
+}
+func (UnimplementedCurrencyCoinServiceServer) VoteCoin(*CoinRequest, CurrencyCoinService_VoteCoinServer) error {
+	return status.Errorf(codes.Unimplemented, "method VoteCoin not implemented")
 }
 func (UnimplementedCurrencyCoinServiceServer) DownvoteCoin(context.Context, *CoinRequest) (*CoinResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DownvoteCoin not implemented")
@@ -206,6 +243,27 @@ func _CurrencyCoinService_UpvoteCoin_Handler(srv interface{}, ctx context.Contex
 	return interceptor(ctx, in, info, handler)
 }
 
+func _CurrencyCoinService_VoteCoin_Handler(srv interface{}, stream grpc.ServerStream) error {
+	m := new(CoinRequest)
+	if err := stream.RecvMsg(m); err != nil {
+		return err
+	}
+	return srv.(CurrencyCoinServiceServer).VoteCoin(m, &currencyCoinServiceVoteCoinServer{stream})
+}
+
+type CurrencyCoinService_VoteCoinServer interface {
+	Send(*CoinResponse) error
+	grpc.ServerStream
+}
+
+type currencyCoinServiceVoteCoinServer struct {
+	grpc.ServerStream
+}
+
+func (x *currencyCoinServiceVoteCoinServer) Send(m *CoinResponse) error {
+	return x.ServerStream.SendMsg(m)
+}
+
 func _CurrencyCoinService_DownvoteCoin_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(CoinRequest)
 	if err := dec(in); err != nil {
@@ -270,6 +328,11 @@ var CurrencyCoinService_ServiceDesc = grpc.ServiceDesc{
 		{
 			StreamName:    "ListCoins",
 			Handler:       _CurrencyCoinService_ListCoins_Handler,
+			ServerStreams: true,
+		},
+		{
+			StreamName:    "VoteCoin",
+			Handler:       _CurrencyCoinService_VoteCoin_Handler,
 			ServerStreams: true,
 		},
 	},
